@@ -1,2 +1,6 @@
 # challenge-landing-page
-repo to house setup instructions and training / eval scripts. catchy name pending. 
+
+__Outline__
+1. Installation instructions
+2. Logistics
+2. Getting started 
