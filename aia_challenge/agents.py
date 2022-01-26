@@ -2,12 +2,32 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 import torch
-import yaml
 from gym import spaces
 from ray.rllib.models.preprocessors import DictFlatteningPreprocessor
 from ray.rllib.models.torch.torch_action_dist import TorchDiagGaussian
 from ray.rllib.policy import TorchPolicy
 from rllib_policies.vision import NatureCNNRNNActorCritic
+
+
+def get_all_subclasses(cls: object):
+    """Get all subclasses of `cls`"""
+    return set(cls.__subclasses__()).union(
+        [s for c in cls.__subclasses__() for s in get_all_subclasses(c)]
+    )
+
+
+def get_subclass(class_name: str, base_cls: object):
+    """Get"""
+    sub_classes = [
+        sub_class
+        for sub_class in get_all_subclasses(base_cls)
+        if sub_class.__name__ == class_name
+    ]
+
+    if len(sub_classes) == 0:
+        raise ValueError(f"{class_name} is not a subclass of `ChallengeSubmission`")
+
+    return sub_classes[0]
 
 
 class ChallengeSubmission:
@@ -21,10 +41,10 @@ class ChallengeSubmission:
         raise NotImplementedError()
 
 
-class RllibTorchPolicy(ChallengeSubmission):
+class BaselinePolicy(ChallengeSubmission):
     def __init__(
         self,
-        config_path: str,
+        config: str,
     ) -> None:
         """Example submission implementation for the policy
         trained with the `train-agent.py` script.
@@ -40,7 +60,7 @@ class RllibTorchPolicy(ChallengeSubmission):
         config_path: str
             Path to policy config file.
         """
-        policy_config = self.get_config(config_path)
+        policy_config = self.get_config(config)
         model = NatureCNNRNNActorCritic(
             self.observation_space,
             self.action_space,
@@ -63,11 +83,9 @@ class RllibTorchPolicy(ChallengeSubmission):
 
         self.last_state = self.policy.get_initial_state()
 
-    def get_config(self, config_path: str) -> Dict[str, any]:
+    def get_config(self, config) -> Dict[str, any]:
         from ray.rllib.agents.ppo import DEFAULT_CONFIG
 
-        with open(config_path) as f:
-            config = yaml.load(f, yaml.Loader)
         policy_config = DEFAULT_CONFIG.copy()
         policy_config.update(config)
         return policy_config

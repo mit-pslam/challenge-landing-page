@@ -43,7 +43,7 @@ class EpisodeOutcome(Enum):
             return EpisodeOutcome.TIME_EXPIRED
 
 
-def run_episode(env: SearchEnv, policy: ChallengeSubmission) -> EpisodeResult:
+def evaluate_episode(env: SearchEnv, policy: ChallengeSubmission) -> EpisodeResult:
     """Run `policy` in `env` for one episode, then return the
     episode results
 
@@ -143,6 +143,6 @@ def evaluate(
     results = []
 
     for _ in tqdm.tqdm(range(n_episodes)):
-        results.append(run_episode(env, policy))
+        results.append(evaluate_episode(env, policy))
     env.close()
     return results

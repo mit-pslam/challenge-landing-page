@@ -1,6 +1,8 @@
 import argparse
 
-from aia_challenge.agents import RllibTorchPolicy
+import yaml
+
+from aia_challenge.agents import ChallengeSubmission, get_subclass
 from aia_challenge.eval import evaluate
 
 
@@ -37,7 +39,10 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
 
-    policy = RllibTorchPolicy(args.agent_config)
+    with open(args.agent_config) as f:
+        config = yaml.load(f, yaml.Loader)
+
+    policy = get_subclass(config["name"], ChallengeSubmission)(config)
 
     results = evaluate(
         policy, args.flightgoggles_path, args.base_port, args.episodes, args.env_config
