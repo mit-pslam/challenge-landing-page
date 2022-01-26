@@ -12,7 +12,7 @@ def get_args():
         "--agent-config", type=str, required=True, help="Configuration file for agent"
     )
     parser.add_argument(
-        "--flightgoggles-path",
+        "--flight-goggles-path",
         type=str,
         required=True,
         help="Path to flightgoggles executable",
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     policy = get_subclass(config["name"], SearchAgent)(config)
 
     results = evaluate(
-        policy, args.flightgoggles_path, args.base_port, args.episodes, args.env_config
+        policy, args.flight_goggles_path, args.base_port, args.episodes, args.env_config
     )
 
     print(results)
