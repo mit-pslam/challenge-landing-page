@@ -16,8 +16,9 @@ def get_all_subclasses(cls: object):
     )
 
 
-def get_subclass(class_name: str, base_cls: object):
-    """Get"""
+def get_subclass(class_name: str, base_cls: object) -> object:
+    """Get `class_name` object, which is a subclass
+    of `base_cls`"""
     sub_classes = [
         sub_class
         for sub_class in get_all_subclasses(base_cls)
@@ -34,21 +35,49 @@ def get_subclass(class_name: str, base_cls: object):
 
 
 class SearchAgent:
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: Dict[str, Any]) -> None:
+        """Submission inferface.
+
+        Submission must implement the `forward` method,
+        which takes an observation and provides and action.
+        The `reset` method may be used to set any episode
+        specific configuration (e.g., RNN states).
+
+        Parameters
+        ----------
+        config: Dict[str, Any]
+            Configuration provided by the user.
+            Configuration file is a yaml that is loaded
+            by the evalaution script. See the challenge instructions
+            for an example.
+        """
         raise NotImplementedError()
 
-    def forward(self, input: Dict[str, np.ndarray]) -> Tuple[np.ndarray, Any]:
+    def act(self, input: Dict[str, np.ndarray]) -> np.ndarray:
+        """Take an observation and provide an action.
+
+        Parameters
+        ----------
+        input: Dict[str, np.ndarray]
+            Dictionary of input observations. Keys are fields
+            names and values are corresponding data.
+
+        Returns
+        -------
+        np.ndarray, shape=(2,)
+            Array of forward velociy and yaw rate commands.
+        """
         raise NotImplementedError()
 
     def reset(self) -> None:
-        raise NotImplementedError()
+        """Called at the start of every episode, which
+        allows for any episode specific configuration (e.g.,
+        RNN state)."""
+        pass
 
 
 class RllibAgent(SearchAgent):
-    def __init__(
-        self,
-        config: str,
-    ) -> None:
+    def __init__(self, config: Dict[str, Any]) -> None:
         """Example submission implementation for the policy
         trained with the `train-agent.py` script.
 
@@ -60,8 +89,8 @@ class RllibAgent(SearchAgent):
 
         Parameters
         ----------
-        config_path: str
-            Path to policy config file.
+        config_path: Dict[str, Any]
+            Configuration dictionary provided by the user.
         """
         policy_config = self.get_config(config)
         model = NatureCNNRNNActorCritic(
@@ -87,6 +116,19 @@ class RllibAgent(SearchAgent):
         self.last_state = self.policy.get_initial_state()
 
     def get_config(self, config) -> Dict[str, any]:
+        """Update default PPO config with custom options
+        given by user.
+
+        Parameters
+        ----------
+        config: Dict[str, Any]
+            Dictionary of custom configurations.
+
+        Returns
+        -------
+        Dict[str, Any]
+            RLlib PPO configuration.
+        """
         from ray.rllib.agents.ppo import DEFAULT_CONFIG
 
         policy_config = DEFAULT_CONFIG.copy()
@@ -110,14 +152,48 @@ class RllibAgent(SearchAgent):
             }
         )
 
-    def forward(self, input_dict: Dict[str, np.ndarray]):
-        action, state = self._forward(input_dict, self.last_state)
+    def act(self, input_dict: Dict[str, np.ndarray]):
+        """Provide forward velociy and yaw rate given
+        an observation. This method wraps `_act`, which
+        handles RNN state.
+
+        Parameters
+        ----------
+        input: Dict[str, np.ndarray]
+            Dictionary of input observations. Keys are fields
+            names and values are corresponding data.
+
+        Returns
+        -------
+        np.ndarray, shape=(2,)
+            Array of forward velociy and yaw rate commands.
+        """
+        action, state = self._act(input_dict, self.last_state)
         self.last_state = state
         return action
 
-    def _forward(
+    def _act(
         self, input_dict: Dict[str, np.ndarray], state: List[torch.Tensor]
     ) -> Tuple[np.ndarray, List[torch.Tensor]]:
+        """Peform all steps required for policy inference including
+        observation preprocessing, policy inference, and action
+        postprocessing.
+
+        Parameters
+        ----------
+        input: Dict[str, np.ndarray]
+            Dictionary of input observations. Keys are fields
+            names and values are corresponding data.
+        state: List[torch.Tensor]
+            RNN states.
+
+        Returns
+        -------
+        Tuple[np.ndarray, Tuple[torch.Tensor, torch.Tensor]]
+            - shape (2, ) array of forward velociy and yaw rate commands.
+            - list of RNN states. LSTM states have two tensors, GRU states 
+              have one tensor.
+        """
         input_obs = self.preprocessor.transform(input_dict).reshape(1, -1)
         input_obs = torch.tensor(input_obs)
 
@@ -128,4 +204,5 @@ class RllibAgent(SearchAgent):
         return action, state
 
     def reset(self) -> None:
+        """Initialize RNN state."""
         self.last_state = self.policy.get_initial_state()

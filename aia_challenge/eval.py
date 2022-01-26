@@ -66,7 +66,7 @@ def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
     policy.reset()
 
     for i in tqdm.tqdm(range(env.max_steps), leave=False):
-        action = policy.forward(obs)
+        action = policy.act(obs)
         obs, reward, done, info = env.step(action)
 
         if done:
