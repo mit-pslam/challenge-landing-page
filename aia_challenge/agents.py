@@ -35,7 +35,7 @@ def get_subclass(class_name: str, base_cls: object) -> object:
 
 
 class SearchAgent:
-    def __init__(self, config_path: Dict[str, Any]) -> None:
+    def __init__(self, config: Dict[str, Any]) -> None:
         """Submission inferface.
 
         Submission must implement the `forward` method,
@@ -51,7 +51,7 @@ class SearchAgent:
             by the evalaution script. See the challenge instructions
             for an example.
         """
-        raise NotImplementedError()
+        pass
 
     def act(self, input: Dict[str, np.ndarray]) -> np.ndarray:
         """Take an observation and provide an action.
@@ -191,7 +191,7 @@ class RllibAgent(SearchAgent):
         -------
         Tuple[np.ndarray, Tuple[torch.Tensor, torch.Tensor]]
             - shape (2, ) array of forward velociy and yaw rate commands.
-            - list of RNN states. LSTM states have two tensors, GRU states 
+            - list of RNN states. LSTM states have two tensors, GRU states
               have one tensor.
         """
         input_obs = self.preprocessor.transform(input_dict).reshape(1, -1)
@@ -206,3 +206,17 @@ class RllibAgent(SearchAgent):
     def reset(self) -> None:
         """Initialize RNN state."""
         self.last_state = self.policy.get_initial_state()
+
+
+class RandomAgent(SearchAgent):
+    """Agent that samples forward velocity and yaw rate
+    from a 2D multivariate gaussian distribution."""
+
+    def __init__(self, config: Dict[str, Any]) -> None:
+        self.action_mean = np.array(config["action_mean"])
+        self.action_cov = np.zeros((2, 2))
+        np.fill_diagonal(self.action_cov, config["action_var"])
+
+    def act(self, input: Dict[str, np.ndarray]) -> np.ndarray:
+        action = np.random.multivariate_normal(self.action_mean, self.action_cov)
+        return action.clip(-1, 1).astype(np.float32)

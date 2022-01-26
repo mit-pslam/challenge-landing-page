@@ -1,0 +1,6 @@
+name: RandomAgent
+
+# agent samples forward velocity and yaw rate 
+# from a 2D multivariate guassian distribution
+action_mean: [0.5, 0] 
+action_var: [0.1, 0.1]

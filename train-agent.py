@@ -50,9 +50,7 @@ def set_env_vars(display: str, device: int) -> None:
     os.environ["DISPLAY"] = f"{display}"
     os.environ["CUDA_VISIBLE_DEVICES"] = str(device)
 
-    # TODO(ZR) is it alright to leave this here? even if
-    # vulkan isn't used, I don't think setting the env
-    # var will hurt anything
+    # vulkan variables
     os.environ["ENABLE_DEVICE_CHOOSER_LAYER"] = "1"
     os.environ["VULKAN_DEVICE_INDEX"] = str(device)
 
