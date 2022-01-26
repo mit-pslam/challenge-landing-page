@@ -2,7 +2,7 @@ import argparse
 
 import yaml
 
-from aia_challenge.agents import ChallengeSubmission, get_subclass
+from aia_challenge.agents import SearchAgent, get_subclass
 from aia_challenge.eval import evaluate
 
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     with open(args.agent_config) as f:
         config = yaml.load(f, yaml.Loader)
 
-    policy = get_subclass(config["name"], ChallengeSubmission)(config)
+    policy = get_subclass(config["name"], SearchAgent)(config)
 
     results = evaluate(
         policy, args.flightgoggles_path, args.base_port, args.episodes, args.env_config

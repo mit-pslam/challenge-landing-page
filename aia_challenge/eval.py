@@ -8,7 +8,7 @@ import yaml
 from rl_navigation.rllib.search import SearchWrapperEnv
 from rl_navigation.tasks.search import SearchEnv
 
-from .agents import ChallengeSubmission
+from .agents import SearchAgent
 
 EpisodeResult = namedtuple("EpisodeInfo", ["output", "steps", "time"])
 
@@ -43,7 +43,7 @@ class EpisodeOutcome(Enum):
             return EpisodeOutcome.TIME_EXPIRED
 
 
-def evaluate_episode(env: SearchEnv, policy: ChallengeSubmission) -> EpisodeResult:
+def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
     """Run `policy` in `env` for one episode, then return the
     episode results
 
@@ -52,8 +52,8 @@ def evaluate_episode(env: SearchEnv, policy: ChallengeSubmission) -> EpisodeResu
     env: SearchEnv
         OpenAI Gym environment that implements the challenge
         target search task.
-    policy: ChallengeSubmission
-        Policy that implements the `ChallengeSubmission` interface.
+    policy: SearchAgent
+        Policy that implements the `SearchAgent` interface.
 
     Returns
     -------
@@ -113,7 +113,7 @@ def get_task_config(
 
 
 def evaluate(
-    policy: ChallengeSubmission,
+    policy: SearchAgent,
     flight_goggles_path: str,
     base_port: int,
     n_episodes: int,
@@ -126,8 +126,8 @@ def evaluate(
 
     Parameters
     ----------
-    policy: ChallengeSubmission
-        A policy the implements the `ChallengeSubmission` inferface.
+    policy: SearchAgent
+        A policy the implements the `SearchAgent` inferface.
     flight_goggles_path: str
         Path to flightgoggles executable.
     base_port: int

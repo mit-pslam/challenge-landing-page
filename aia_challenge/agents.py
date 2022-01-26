@@ -33,7 +33,7 @@ def get_subclass(class_name: str, base_cls: object):
     return sub_classes[0]
 
 
-class ChallengeSubmission:
+class SearchAgent:
     def __init__(self, config_path: str):
         raise NotImplementedError()
 
@@ -44,7 +44,7 @@ class ChallengeSubmission:
         raise NotImplementedError()
 
 
-class BaselinePolicy(ChallengeSubmission):
+class RllibAgent(SearchAgent):
     def __init__(
         self,
         config: str,

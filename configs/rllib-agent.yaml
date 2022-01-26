@@ -1,0 +1,16 @@
+name: RllibAgent
+weights: configs/rllib-agent.pt
+framework: torch
+model:
+  custom_model: nature_cnn_rnn
+  custom_model_config:
+    cnn_shape_chw:
+    - 4
+    - 192
+    - 256
+    fields:
+    - image
+    - depth
+    hidden_size: 512
+    rnn_type: LSTM
+  max_seq_len: 400
