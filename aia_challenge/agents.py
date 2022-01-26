@@ -25,7 +25,10 @@ def get_subclass(class_name: str, base_cls: object):
     ]
 
     if len(sub_classes) == 0:
-        raise ValueError(f"{class_name} is not a subclass of `ChallengeSubmission`")
+        raise ValueError(f"{class_name} is not a subclass of {base_cls}")
+
+    if len(sub_classes) > 1:
+        raise ValueError(f"Multiple definitions of {class_name} found")
 
     return sub_classes[0]
 
