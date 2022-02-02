@@ -25,7 +25,7 @@ Please see the [installation](doc/installation.md) document for detailed instruc
 
 ## Submitting a Policy
 
-Policies must implement the [`SearchAgent`]() interface:
+Policies must implement the [`SearchAgent`](aia_challenge/agents.py#L33) interface:
 
 ```python
 class SearchAgent:
@@ -60,7 +60,7 @@ To evaluate the agent, run
 python train-agent.py --config <AGENT_CONFIG> --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
 ```
 
-The `RandomAgent` [definition]() and corresponding [configuration]() provides an example of the submission template. 
+The `RandomAgent` [definition](aia_challenge/agents.py#L212) and corresponding [configuration](configs/eval-random-agent.yaml) provide an example of the submission template. 
    
 ## Baselines 
 
