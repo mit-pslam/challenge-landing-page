@@ -66,15 +66,26 @@ def get_args() -> argparse.Namespace:
         help="Path to flightgoggles build",
         required=True,
     )
-
-    # TODO(ZR)  add docs
     parser.add_argument(
-        "--base-port", type=int, help="Base flightgoggles port", required=True
+        "--base-port",
+        type=int,
+        help="Base flightgoggles port",
+        required=True,
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        help="Device on which to run training",
+        required=False,
+        default=None,
     )
     parser.add_argument(
         "--display",
+        type=str,
+        help="Display on which to run flightgoggles",
+        required=False,
+        default=None,
     )
-    parser.add_argument("--device")
     return parser.parse_args()
 
 
@@ -87,7 +98,8 @@ if __name__ == "__main__":
     num_train_iterations = config.pop("num_training_iterations")
     ckpt_save_freq = config.pop("checkpoint_save_frequency")
 
-    set_env_vars(args.display, args.device)
+    if args.display and args.device:
+        set_env_vars(args.display, args.device)
 
     ray.init()
 

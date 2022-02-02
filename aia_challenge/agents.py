@@ -3,10 +3,6 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import torch
 from gym import spaces
-from ray.rllib.models.preprocessors import DictFlatteningPreprocessor
-from ray.rllib.models.torch.torch_action_dist import TorchDiagGaussian
-from ray.rllib.policy import TorchPolicy
-from rllib_policies.vision import NatureCNNRNNActorCritic
 
 
 def get_all_subclasses(cls: object):
@@ -92,6 +88,11 @@ class RllibAgent(SearchAgent):
         config_path: Dict[str, Any]
             Configuration dictionary provided by the user.
         """
+        from ray.rllib.models.preprocessors import DictFlatteningPreprocessor
+        from ray.rllib.models.torch.torch_action_dist import TorchDiagGaussian
+        from ray.rllib.policy import TorchPolicy
+        from rllib_policies.vision import NatureCNNRNNActorCritic
+
         policy_config = self.get_config(config)
         model = NatureCNNRNNActorCritic(
             self.observation_space,
