@@ -22,5 +22,5 @@ python train-agent.py --config configs/train-rllib-agent.yaml --flight-goggles-p
 ## Evaluate your agent
 
 ```
-python evaluate-agent.py --config configs/eval-rllib-agent.yaml --episodes 1 --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
+python evaluate-agent.py --agent-config configs/eval-rllib-agent.yaml --episodes 1 --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
 ```
