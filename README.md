@@ -57,7 +57,7 @@ Where `AGENT_NAME` is the agent's class name.
 To evaluate the agent, run
 
 ```sh
-python train-agent.py --config <AGENT_CONFIG> --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
+python evaluate-agent.py --agent-config <AGENT_CONFIG> --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
 ```
 
 The `RandomAgent` [definition](aia_challenge/agents.py#L212) and corresponding [configuration](configs/eval-random-agent.yaml) provide an example of the submission template. 
