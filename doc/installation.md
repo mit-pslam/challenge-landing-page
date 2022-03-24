@@ -15,7 +15,7 @@ You will need to have CUDA installed, as well.
 
 Install the following dependencies.
 ```sh
-sudo apt install libeigen3-dev libzmqpp-dev
+sudo apt install cmake libeigen3-dev libopencv-dev libzmqpp-dev
 
 # Optional, install the following if you anticipate training across multiple GPUs 
 # sudo apt install libvulkan-dev vulkan-validationlayers-dev 
@@ -33,6 +33,11 @@ Create a virtual environment (optional):
 ```sh
 conda create --name aia-challenge python=3.7 meson pkgconfig
 conda activate aia-challenge
+```
+
+Please ensure that `pip` is up to date, too:
+```sh
+pip install --upgrade pip
 ```
 
 **PyTorch**
