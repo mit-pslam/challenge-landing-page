@@ -5,3 +5,6 @@ __pycache__/
 
 # logging
 ray_results/ 
+
+# ide
+.vscode
