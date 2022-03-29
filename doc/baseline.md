@@ -28,7 +28,7 @@ python train-agent.py --config configs/train-rllib-agent.yaml --flight-goggles-p
 ```
 
 ### 
-By default, training logs will be written under the `./ray_results` folder. Tensorboard may be used to visualize training results in real time. See the Tensorboard [documentation](https://www.tensorflow.org/install) for install instructions. Then, you can run Tensorboard via the following command:
+By default, training logs will be written under the `./ray_results` folder. Training logs include sample episode videos and tensorboard logging. Tensorboard may be used to visualize training results in real time. See the Tensorboard [documentation](https://www.tensorflow.org/install) for install instructions. Then, you can run Tensorboard via the following command:
 
 ```
 >> tensorboard --logdir ray_results
