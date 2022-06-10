@@ -1,6 +1,7 @@
 # Installation Instructions 
 
 These instructions assume Ubuntu and an NVidia GPU.
+The software requires Python 3.7 or greater.
 You will need to have CUDA installed, as well.
 
 **Notes**
@@ -15,7 +16,7 @@ You will need to have CUDA installed, as well.
 
 Install the following dependencies.
 ```sh
-sudo apt install cmake libeigen3-dev libopencv-dev libzmqpp-dev
+sudo apt install cmake libeigen3-dev libopencv-dev libzmqpp-dev libyaml-cpp-dev
 
 # Optional, install the following if you anticipate training across multiple GPUs 
 # sudo apt install libvulkan-dev vulkan-validationlayers-dev 
@@ -42,9 +43,13 @@ pip install --upgrade pip
 
 **PyTorch**
 
-(Note: We recommend PyTorch for training, and provide examples using PyTorch.
+**Note:** We recommend PyTorch for training, and provide examples using PyTorch.
 However, PyTorch is not required for evaluation.
-You can skip this step and still submit solutions for this challenge.)
+You can skip this step if you do not plan to use PyTorch and you will still be able submit solutions for this challenge.
+
+If you will be using PyTorch, make sure to install it at this point before moving on.
+If you skip it here, later install steps will check for it and, if missing, install with `pip`.
+This automatically-installed version is virtually guaranteed to be incorrect for your system.
 
 Check your version of CUDA (i.e., `nvcc --version`) and install the proper version of [pytorch](https://pytorch.org/get-started/locally/) for your system for use with Python 3.7.
 
@@ -71,3 +76,7 @@ Run an agent that will randomly take actions sampled from a normal distribution
 cd challenge-landing-page
 python evaluate-agent.py --agent-config configs/eval-random-agent.yaml --episodes 1 --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
 ```
+
+Note that `<FLIGHT_GOGGLES_PATH>` is a fully specified path to the binary, e.g., `/home/user/FlightGoggles/FlightGoggles.x86_64`.
+And `<BASE_PORT>` is a number, typically between 1024 and 49151.
+Ports are used for communicating between multiple applications -- in our case between python and FlightGoggles.

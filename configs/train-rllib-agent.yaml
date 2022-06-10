@@ -8,12 +8,14 @@ env_config:
   fields:
   - depth
   - image
+  resolution: minimal
+  max_steps: 200  # needs to be less than sgd_minibatch_size
 
 # ray evaluation 
 evaluation_config:
   record_env: true
   render_env: true
-evaluation_interval: 100
+evaluation_interval: 0  # Set this to a positive integer to enable evaluations during training
 evaluation_num_episodes: 50
 evaluation_num_workers: 0
 
@@ -22,13 +24,13 @@ framework: torch
 gamma: 0.999
 horizon: null
 lambda: 0.9
-log_level: DEBUG 
+log_level: INFO
 lr: 0.0001
 sgd_minibatch_size: 256
 train_batch_size: 1024
 vf_clip_param: 50
 vf_loss_coeff: 0.25
-vf_share_layers: false
+vf_share_layers: true
 clip_param: 0.2
 entropy_coeff: 0.01
 
@@ -44,9 +46,9 @@ model:
     fields:
     - image
     - depth
-    hidden_size: 512
+    hidden_size: 128
     rnn_type: LSTM
-  max_seq_len: 600
+  max_seq_len: 300
 
 # training environment
 num_envs_per_worker: 1
