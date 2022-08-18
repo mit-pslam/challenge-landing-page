@@ -1,2 +1,2 @@
-rl_navigation[rllib] @ git+ssh://git@github.mit.edu/aiia-suas-disaster-response/rl_navigation.git@develop#egg=rl_navigation
+rl_navigation[rllib] @ git+ssh://git@github.mit.edu/aiia-suas-disaster-response/rl_navigation.git@grayscalep#egg=rl_navigation
 rllib_policies@git+ssh://git@github.mit.edu/aiia-suas-disaster-response/rllib-policies.git@master#egg=rllib_policies
