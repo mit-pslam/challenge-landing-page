@@ -16,6 +16,8 @@ env_config:
 evaluation_config:
   record_env: true
   render_env: true
+  env_config:
+    base_port_offset: 100
 evaluation_interval: 0  # Set this to a positive integer to enable evaluations during training
 evaluation_duration: 50
 evaluation_num_workers: 0

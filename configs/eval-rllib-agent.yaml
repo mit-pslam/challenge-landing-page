@@ -5,12 +5,11 @@ model:
   custom_model: nature_cnn_rnn
   custom_model_config:
     cnn_shape_chw:
-    - 4
+    - 2
     - 192
     - 256
     fields:
-    - image
+    - grayscale
     - depth
-    hidden_size: 512
+    hidden_size: 128
     rnn_type: LSTM
-  max_seq_len: 400

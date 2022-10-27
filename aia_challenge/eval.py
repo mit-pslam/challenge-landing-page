@@ -1,12 +1,16 @@
 import time
 from collections import namedtuple
 from enum import Enum
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 import tqdm
 import yaml
 from rl_navigation.rllib.search import SearchWrapperEnv
 from rl_navigation.tasks.search import SearchEnv
+
+from gym import wrappers as gym_wrappers
+import random
+import os
 
 from .agents import SearchAgent
 
@@ -15,14 +19,16 @@ EpisodeResult = namedtuple("EpisodeInfo", ["output", "steps", "time"])
 
 DEFAULT_CONFIG = {
     "renderer": "flight_goggles",
-    "fields": ["image", "depth"],
-    "max_steps": 400,
+    "fields": ["depth", "grayscale"],
+    "max_steps": 200,
     "action_mapper": "dubins-car",
     "simulator": "dubins-car",
     "flight_goggles_scene": "ground_floor_car",
     "max_range_from_ownship": 20,
     "success_dist": 3,
     "enforce_target_in_fov": True,
+    "camWidth": 256,
+    "camHeight": 192,
 }
 
 
@@ -118,6 +124,8 @@ def evaluate(
     base_port: int,
     n_episodes: int,
     custom_task_config: str,
+    seed: Optional[int] = None,
+    video_directory: os.PathLike = None,
 ) -> List[EpisodeResult]:
     """Run policy evaluation in target search task.
 
@@ -140,9 +148,23 @@ def evaluate(
     task_config = get_task_config(flight_goggles_path, base_port, custom_task_config)
     env = SearchWrapperEnv(task_config)
 
+    if video_directory is not None:
+        env = gym_wrappers.Monitor(
+            env=env,
+            directory=video_directory,
+            video_callable=lambda _: True,
+            force=True,
+        )
+
     results = []
 
-    for _ in tqdm.tqdm(range(n_episodes)):
+    if seed is not None:
+        random.seed(seed)
+        seeds = [random.randint(0, 2**32) for _ in range(n_episodes)]
+
+    for i in tqdm.tqdm(range(n_episodes)):
+        if seed is not None:
+            random.seed(seeds[i])
         results.append(evaluate_episode(env, policy))
     env.close()
     return results
