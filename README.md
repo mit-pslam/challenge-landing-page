@@ -3,7 +3,7 @@
 Free food alert! Someone has generously left pizza(?) in MIT's Stata Center. But there's a catch - food is limited. 
 To get the some before it runs out, you will create an autonomous robot that will search the Stata Center and locate this food.
 
-This challenge uses [FlightGoggole's Stata Center environment](https://flightgoggles.mit.edu/virtual-environments/stata-center).
+This challenge uses [FlightGoggle's Stata Center environment](https://flightgoggles.mit.edu/virtual-environments/stata-center).
 We also provide an OpenAI Gym interface and baseline policies.
 This page provides challenges details including a description, installation instructions, a description of the submission interface, and policy training example. 
 
@@ -17,11 +17,11 @@ __Outline__
 
 The agent must find a target placed in the FlightGoggles Stata center environment. 
 The target is currently a gate, like the one used for the AlphaPilot challenge, but it will be replaced with a food item at some future date.
-For an episode to be considered successful, the agent must find the target within 600 steps. 
+For an episode to be considered successful, the agent must find the target within 200 steps.
 The target is considered found if it is within 2 meters of the agent and within the agent's field-of-view. 
 Finally, the episode ends if the agent collides with an obstacle.
 
-At each step, the agent observes an RGB image, a ground truth depth image, and ground truth pose.
+At each step, the agent observes a grayscale image, a ground truth depth image, and ground truth pose.
 The agent output a Dubins vehicle-like [action](https://flightgoggles-documentation.scrollhelp.site/fg/Car-Dynamics.374996993.html) via a 2D vector consisting of forward velocity and yaw rate.
 
 
@@ -80,7 +80,3 @@ For complete instructions on running and evaluation our baseline, please see the
 ## Common Questions/Issues
 
 See our [FAQ](doc/faq.md) page for discussion about common issues that you may experience.
-
-# Issues
-- [ ] correct version of pytorch gets wiped by a `rl_navigation` install, which breaks cuda compatibility 
-
