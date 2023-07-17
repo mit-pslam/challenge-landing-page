@@ -144,6 +144,10 @@ def evaluate(
         Number of episodes to run.
     custom_task_config: str
         Path to yaml file containing any custom task configurations.
+    seed: int
+        Set the seed for repeatable evaluation episodes.
+    video_diretory: os.PathLike
+        Setting a video_directory will configure evaluations to create videos of all evaluation episodes.
     """
     task_config = get_task_config(flight_goggles_path, base_port, custom_task_config)
     env = SearchWrapperEnv(task_config)
