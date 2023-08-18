@@ -10,8 +10,9 @@ This page provides challenges details including a description, installation inst
 __Outline__
 1. [Task Overview](#Task-Overview)
 1. [Installation](#Installation-Instructions)
-2. [Submission](#Submitting-a-policy)
-2. [Getting started with baselines](#Baselines)
+1. [Submission](#Submitting-a-policy)
+1. [Getting started with baselines](#Baselines)
+1. [Additional details](#additional-details)
 
 ## Task Overview
 
@@ -77,6 +78,8 @@ We provide a baseline that ingests RGB and depth images via convolutional and re
 
 For complete instructions on running and evaluation our baseline, please see the baseline [document](doc/baseline.md).
 
-## Common Questions/Issues
+## Additional Details
+
+We've posted some [tips and ideas](doc/tips.md) to help you get started with the challenge.
 
 See our [FAQ](doc/faq.md) page for discussion about common issues that you may experience.
