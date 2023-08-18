@@ -18,3 +18,13 @@ Then, use `kill` to stop the process.
 
 Alternatively, it may be possible you are trying to use a port reserved by another system.
 In this case, select a new port to use.
+
+__The depth camera in FlightGoggles looks weird. Is it broken?__
+
+Short answer: probably not! 
+
+Below is an example screen shot showing an RGB camera image on top and a depth image below.
+Note the stripped effect on the depth image, which is perfectly normal.
+Unity is embedding depth information into the three RGB channels, so you see the result of that embedding.
+
+![FlightGoggles Image](images/flight-goggles-depth-example.png)

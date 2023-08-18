@@ -145,10 +145,10 @@ class RllibAgent(SearchAgent):
         return spaces.Dict(
             {
                 "depth": spaces.Box(
-                    low=0, high=1, shape=(192, 256, 1), dtype=np.float64
+                    low=0, high=1, shape=(192, 256, 1), dtype=np.float32
                 ),
-                "image": spaces.Box(
-                    low=0, high=1, shape=(192, 256, 3), dtype=np.float64
+                "grayscale": spaces.Box(
+                    low=0, high=1, shape=(192, 256, 1), dtype=np.float32
                 ),
             }
         )

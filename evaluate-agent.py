@@ -33,6 +33,20 @@ def get_args():
         default=None,
         help="Optional environment configuration",
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        required=False,
+        default=None,
+        help="Evaluation seed (int). Setting this ensures repeatable episode sequences. Default is None.",
+    )
+    parser.add_argument(
+        "--video-directory",
+        type=str,
+        required=False,
+        default=None,
+        help="Optional path to directory to store episode videos. Default is None.",
+    )
     return parser.parse_args()
 
 
@@ -45,7 +59,13 @@ if __name__ == "__main__":
     policy = get_subclass(config["name"], SearchAgent)(config)
 
     results = evaluate(
-        policy, args.flight_goggles_path, args.base_port, args.episodes, args.env_config
+        policy,
+        args.flight_goggles_path,
+        args.base_port,
+        args.episodes,
+        args.env_config,
+        args.seed,
+        args.video_directory
     )
 
     print(results)
