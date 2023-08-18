@@ -28,3 +28,9 @@ Note the stripped effect on the depth image, which is perfectly normal.
 Unity is embedding depth information into the three RGB channels, so you see the result of that embedding.
 
 ![FlightGoggles Image](images/flight-goggles-depth-example.png)
+
+__Can I run FlightGoggles headless?__
+
+Yes! See the FlightGoggles documentation [here](https://flightgoggles-documentation.scrollhelp.site/fg/headless-ubuntu-server-e-g-aws).
+It is possible the run headless with some additional setup.
+This may be desirable if you want to develop and/or train on a remote server.
