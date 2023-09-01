@@ -20,7 +20,7 @@ EpisodeResult = namedtuple("EpisodeInfo", ["output", "steps", "time"])
 DEFAULT_CONFIG = {
     "renderer": "flight_goggles",
     "fields": ["depth", "grayscale"],
-    "max_steps": 200,
+    "max_steps": 1,
     "action_mapper": "dubins-car",
     "simulator": "dubins-car",
     "flight_goggles_scene": "ground_floor_car",
@@ -83,7 +83,7 @@ def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
     return EpisodeResult(
         EpisodeOutcome.from_conditions(info["reached_goal"], info["collided"]),
         i,
-        time_elapsed,
+        round(time_elapsed, 2)
     )
 
 
@@ -126,6 +126,7 @@ def evaluate(
     custom_task_config: str,
     seed: Optional[int] = None,
     video_directory: os.PathLike = None,
+    log_directory: os.PathLike = None
 ) -> List[EpisodeResult]:
     """Run policy evaluation in target search task.
 
@@ -149,7 +150,8 @@ def evaluate(
     video_diretory: os.PathLike
         Setting a video_directory will configure evaluations to create videos of all evaluation episodes.
     """
-    task_config = get_task_config(flight_goggles_path, base_port, custom_task_config)
+    task_config = get_task_config(
+        flight_goggles_path, base_port, custom_task_config)
     env = SearchWrapperEnv(task_config)
 
     if video_directory is not None:
@@ -170,5 +172,11 @@ def evaluate(
         if seed is not None:
             random.seed(seeds[i])
         results.append(evaluate_episode(env, policy))
-    env.close()
+    env.close()   
+    
+    i = 1
+    for episode in results:
+        print(str(i) + ": " + str(episode[0])[15:] + ", " + str(episode[1]) + " steps, " + str(round(episode[2], 2)) + " s.")
+        i += 1
+
     return results

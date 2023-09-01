@@ -68,4 +68,3 @@ if __name__ == "__main__":
         args.video_directory
     )
 
-    print(results)
