@@ -44,3 +44,5 @@ The provided configuration will evaluate a policy defined by `train-rllib-agent.
 ```
 python evaluate-agent.py --agent-config configs/eval-rllib-agent.yaml --episodes 1 --flight-goggles-path <FLIGHT_GOGGLES_PATH> --base-port <BASE_PORT>
 ```
+
+Two baseline policies have been provided for you in the configs directory, along with video evaluations of them. The policies were trained on 100 and 200 steps respectively and have about a 60% rate of finding the goal. See if you can do better!
