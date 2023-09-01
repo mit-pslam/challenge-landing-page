@@ -20,7 +20,7 @@ EpisodeResult = namedtuple("EpisodeInfo", ["output", "steps", "time"])
 DEFAULT_CONFIG = {
     "renderer": "flight_goggles",
     "fields": ["depth", "grayscale"],
-    "max_steps": 1,
+    "max_steps": 1000,
     "action_mapper": "dubins-car",
     "simulator": "dubins-car",
     "flight_goggles_scene": "ground_floor_car",
