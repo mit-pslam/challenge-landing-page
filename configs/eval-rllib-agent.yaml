@@ -1,5 +1,5 @@
 name: RllibAgent
-weights: configs/model199.pt
+weights: configs/model.pt
 framework: torch
 model:
   custom_model: nature_cnn_rnn
