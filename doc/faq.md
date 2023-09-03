@@ -1,5 +1,9 @@
 # Frequently Asked Questions
 
+**I'm having issues with python/linux packages, how can I fix this?**
+
+Using a conda environment to run the challenge can solve many package issues. Otherwise, check that your system is using the correct version and furthermore, check the requirements.txt file and see if the problem is there. If all else fails, try force reinstalling the specific package version using pip.
+
 __Something happened and FlightGoggles never closed. What should I do?__
 
 Our Python software operates by launching FlightGoggles in a subprocess.
@@ -28,3 +32,23 @@ Note the stripped effect on the depth image, which is perfectly normal.
 Unity is embedding depth information into the three RGB channels, so you see the result of that embedding.
 
 ![FlightGoggles Image](images/flight-goggles-depth-example.png)
+
+**I trained my agent but I didn't get any model output?**
+
+By default checkpoints are saved every 100 steps in the ray_results folder. You can change how often it saves by editing the associated training .yaml config file.
+
+**My agent just spins infinitely/moves super slowly/gets stuck in one area, how do I unstuck it?**
+
+You may have overtrained your agent. Try using a checkpoint output from a training run with less steps.
+
+**How can I test my agent on the same environment, instead of a random one every time?**
+
+Use the --seed flag in the evaluation command, more details are in evaluate-agent.py
+
+**How can I see the details of the gym environment the challenge uses?**
+
+The gym environment is found in the rl_navigation package.
+
+**I'm getting an error about a size mismatch of the model I'm evaluation, how can I fix this?**
+
+Make sure the size and shape parameters in your evaluation .yaml config matches the parameters of the model you trained.
