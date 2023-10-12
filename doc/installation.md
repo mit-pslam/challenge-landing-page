@@ -6,7 +6,8 @@ You will need to have CUDA installed, as well.
 
 **Notes**
 
-- The following instructions use Anaconda, but other virtual environments, such as [venv](https://docs.python.org/3/library/venv.html), could suffice. 
+- The following instructions use [Anaconda](https://anaconda.org/), which we strongly encourage.
+- Other virtual environments, such as [venv](https://docs.python.org/3/library/venv.html), could suffice but we have not had luck with alternatives.
 - We use several custom repositories (`rl_navigation`, `rllib-policies`).
 
 

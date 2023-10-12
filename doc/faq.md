@@ -33,6 +33,12 @@ Unity is embedding depth information into the three RGB channels, so you see the
 
 ![FlightGoggles Image](images/flight-goggles-depth-example.png)
 
+__Can I run FlightGoggles headless?__
+
+Yes! See the FlightGoggles documentation [here](https://flightgoggles-documentation.scrollhelp.site/fg/headless-ubuntu-server-e-g-aws).
+It is possible the run headless with some additional setup.
+This may be desirable if you want to develop and/or train on a remote server.
+
 **I trained my agent but I didn't get any model output?**
 
 By default checkpoints are saved every 100 steps in the ray_results folder. You can change how often it saves by editing the associated training .yaml config file.
@@ -52,3 +58,4 @@ The gym environment is found in the rl_navigation package.
 **I'm getting an error about a size mismatch of the model I'm evaluation, how can I fix this?**
 
 Make sure the size and shape parameters in your evaluation .yaml config matches the parameters of the model you trained.
+
