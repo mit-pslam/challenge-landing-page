@@ -18,7 +18,7 @@ __Outline__
 
 The agent must find a target placed in the FlightGoggles Stata center environment. 
 The target is currently a gate, like the one used for the AlphaPilot challenge, but it will be replaced with a food item at some future date.
-For an episode to be considered successful, the agent must find the target within 200 steps.
+For an episode to be considered successful, the agent must find the target within 1,000 steps.
 The target is considered found if it is within 2 meters of the agent and within the agent's field-of-view. 
 Finally, the episode ends if the agent collides with an obstacle.
 
@@ -74,9 +74,10 @@ See [here](https://www.linuxandubuntu.com/home/what-are-ports-how-to-find-open-p
    
 ## Baselines 
 
-We provide a baseline that ingests RGB and depth images via convolutional and recurrent networks. The baseline makes use of the [Rllib](https://docs.ray.io/en/master/rllib/) library and is implemented in PyTorch. 
+We provide a baseline that ingests RGB and depth images via convolutional and recurrent networks.
+The baseline makes use of the [Rllib](https://docs.ray.io/en/master/rllib/) library and is implemented in PyTorch.
 
-For complete instructions on running and evaluation our baseline, please see the baseline [document](doc/baseline.md).
+For complete instructions on running and evaluating our baseline, please see the baseline [document](doc/baseline.md).
 
 ## Additional Details
 

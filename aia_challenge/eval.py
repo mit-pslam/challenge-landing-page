@@ -11,6 +11,7 @@ from rl_navigation.tasks.search import SearchEnv
 from gym import wrappers as gym_wrappers
 import random
 import os
+import numpy as np
 
 from .agents import SearchAgent
 
@@ -47,6 +48,9 @@ class EpisodeOutcome(Enum):
             return EpisodeOutcome.COLLIDED
         else:
             return EpisodeOutcome.TIME_EXPIRED
+        
+    def __str__(self):
+        return self.name
 
 
 def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
@@ -96,9 +100,9 @@ def get_task_config(
     Parameters
     ----------
     flight_goggles_path: str
-        Path to flightgoggles executable.
+        Path to FlightGoggles executable.
     base_port: int
-        Base port for flightgoggles to use.
+        Base port for FlightGoggles to use.
     custom_config: str
         Path to yaml file of custom configurations.
 
@@ -124,7 +128,7 @@ def evaluate(
     base_port: int,
     n_episodes: int,
     custom_task_config: str,
-    seed: Optional[int] = None,
+    seed: int = 0,
     video_directory: os.PathLike = None,
     log_directory: os.PathLike = None
 ) -> List[EpisodeResult]:
@@ -136,18 +140,18 @@ def evaluate(
     Parameters
     ----------
     policy: SearchAgent
-        A policy the implements the `SearchAgent` inferface.
+        A policy the implements the `SearchAgent` interface.
     flight_goggles_path: str
-        Path to flightgoggles executable.
+        Path to FlightGoggles executable.
     base_port: int
-        Base port for flightgoggles to use.
+        Base port for FlightGoggles to use.
     n_episodes: int
         Number of episodes to run.
     custom_task_config: str
         Path to yaml file containing any custom task configurations.
     seed: int
         Set the seed for repeatable evaluation episodes.
-    video_diretory: os.PathLike
+    video_directory: os.PathLike
         Setting a video_directory will configure evaluations to create videos of all evaluation episodes.
     """
     task_config = get_task_config(
@@ -172,11 +176,35 @@ def evaluate(
         if seed is not None:
             random.seed(seeds[i])
         results.append(evaluate_episode(env, policy))
-    env.close()   
-    
-    i = 1
-    for episode in results:
-        print(str(i) + ": " + str(episode[0])[15:] + ", " + str(episode[1]) + " steps, " + str(round(episode[2], 2)) + " s.")
-        i += 1
 
-    return results
+    env.close()
+
+    
+    d = dict() # dictionary to collect results
+
+    # Summarize results in dictionary
+    outcomes = [r[0] for r in results]
+    steps = [r[1] for r in results if r[0]==EpisodeOutcome.FOUND_TARGET]
+    d["summary"] = {
+        "number of episodes": len(outcomes),
+        "total targets found": outcomes.count(EpisodeOutcome.FOUND_TARGET),
+        "total collisions": outcomes.count(EpisodeOutcome.COLLIDED),
+        "total time expired": outcomes.count(EpisodeOutcome.TIME_EXPIRED),
+        "average steps to find target": float(np.mean(steps)),
+        "time to perform evaluation (s)": float(np.sum([r[2] for r in results])),
+    }
+
+    # Collect evaluation results in dictionary
+    d["episodes"] = []
+    for i, episode in enumerate(results):
+        d["episodes"].append(
+            {"seed": seeds[i],
+             "outcome": str(episode[0]),
+             "steps": episode[1],
+             "time": episode[2],
+            }
+        )
+
+    d["task configuration"] = task_config
+
+    return d

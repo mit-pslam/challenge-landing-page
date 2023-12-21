@@ -1,6 +1,8 @@
 import argparse
 
 import yaml
+from datetime import datetime
+import numpy as np
 
 from aia_challenge.agents import SearchAgent, get_subclass
 from aia_challenge.eval import evaluate
@@ -37,8 +39,8 @@ def get_args():
         "--seed",
         type=int,
         required=False,
-        default=None,
-        help="Evaluation seed (int). Setting this ensures repeatable episode sequences. Default is None.",
+        default=0,
+        help="Evaluation seed (int). Setting this ensures repeatable episode sequences. Default is 0.",
     )
     parser.add_argument(
         "--video-directory",
@@ -68,3 +70,15 @@ if __name__ == "__main__":
         args.video_directory
     )
 
+    print(results["summary"])
+    filename = 'evaluation.' + datetime.now().isoformat() + '.yaml'
+    print("Writing results to " + filename)
+
+    # Convert numpy arrays to lists for yaml serialization
+    for key, value in results.items():
+        if isinstance(value, np.ndarray):
+            results[key] = value.tolist()
+
+    # save results to file
+    with open(filename, 'w') as outfile:
+        yaml.dump(results, outfile, default_flow_style=False)
