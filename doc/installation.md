@@ -65,7 +65,7 @@ True
 
 Next, clone this repository and use `pip` to install it's requirements.
 ```sh
-git clone git@github.mit.edu:aiia-suas-disaster-response/challenge-landing-page.git
+git clone https://github.com/mit-pslam/challenge-landing-page.git
 pip install -r challenge-landing-page/requirements.txt
 ```
 

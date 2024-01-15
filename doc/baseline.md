@@ -9,11 +9,11 @@ The baseline is implemented in [`agents.py`]().
 
 ## Installation
 
-We implement our baselines in the [rllib-policies](https://github.mit.edu/aiia-suas-disaster-response/rllib-policies) library, which contains utilities for creating RLlib-compatible policies. 
+We implement our baselines in the [rllib-policies](https://github.com/mit-pslam/rllib-policies) library, which contains utilities for creating RLlib-compatible policies. 
 Install this library to run the baseline.
 
 ```
-git clone git@github.mit.edu:aiia-suas-disaster-response/rllib-policies.git
+git clone https://github.com/mit-pslam/rllib-policies.git
 pip install -e rllib-policies
 ```
 
