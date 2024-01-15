@@ -53,7 +53,7 @@ class EpisodeOutcome(Enum):
         return self.name
 
 
-def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
+def evaluate_episode(env: SearchEnv, policy: SearchAgent, disable: bool = False) -> EpisodeResult:
     """Run `policy` in `env` for one episode, then return the
     episode results
 
@@ -64,6 +64,8 @@ def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
         target search task.
     policy: SearchAgent
         Policy that implements the `SearchAgent` interface.
+    disable: bool
+        Disable progress bar.
 
     Returns
     -------
@@ -75,7 +77,7 @@ def evaluate_episode(env: SearchEnv, policy: SearchAgent) -> EpisodeResult:
     obs = env.reset()
     policy.reset()
 
-    for i in tqdm.tqdm(range(env.max_steps), leave=False):
+    for i in tqdm.tqdm(range(env.max_steps), leave=False, disable=disable):
         action = policy.act(obs)
         obs, reward, done, info = env.step(action)
 
@@ -130,7 +132,7 @@ def evaluate(
     custom_task_config: str,
     seed: int = 0,
     video_directory: os.PathLike = None,
-    log_directory: os.PathLike = None
+    disable: bool = False
 ) -> List[EpisodeResult]:
     """Run policy evaluation in target search task.
 
@@ -153,6 +155,8 @@ def evaluate(
         Set the seed for repeatable evaluation episodes.
     video_directory: os.PathLike
         Setting a video_directory will configure evaluations to create videos of all evaluation episodes.
+    disable: bool
+        Disable storing of episode seeds and per-episode progress bars. Used for blind evaluations.
     """
     task_config = get_task_config(
         flight_goggles_path, base_port, custom_task_config)
@@ -175,7 +179,7 @@ def evaluate(
     for i in tqdm.tqdm(range(n_episodes)):
         if seed is not None:
             random.seed(seeds[i])
-        results.append(evaluate_episode(env, policy))
+        results.append(evaluate_episode(env, policy, disable))
 
     env.close()
 
@@ -198,7 +202,7 @@ def evaluate(
     d["episodes"] = []
     for i, episode in enumerate(results):
         d["episodes"].append(
-            {"seed": seeds[i],
+            {"seed": seeds[i] if not disable else None,
              "outcome": str(episode[0]),
              "steps": episode[1],
              "time": episode[2],

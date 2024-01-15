@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Get the FlightGoggles path and Docker image name from command line arguments
+FLIGHTGOGGLES_PATH=$1
+DOCKER_IMAGE_NAME=$2
+
 XAUTH=/tmp/.docker.xauth
 if [ ! -f $XAUTH ]
 then
@@ -23,7 +27,6 @@ docker run --gpus=all \
     --volume "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --env "XAUTHORITY=$XAUTH" \
     --volume "$XAUTH:$XAUTH" \
-    --volume ${PWD}/challenge/:/work/challenge \
-    --volume /home/triton/Documents/FlightGogglesv3-release:/work/FG/ \
+    --volume $FLIGHTGOGGLES_PATH:/challenge/FlightGoggles/ \
     --privileged \
-    -it aiia-challenge bash
+    -it $DOCKER_IMAGE_NAME bash

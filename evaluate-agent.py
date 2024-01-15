@@ -39,8 +39,15 @@ def get_args():
         "--seed",
         type=int,
         required=False,
-        default=0,
-        help="Evaluation seed (int). Setting this ensures repeatable episode sequences. Default is 0.",
+        default=None,
+        help="Evaluation seed (int). Setting this ensures repeatable episode sequences. Default is None, which requires user input.",
+    )
+    parser.add_argument(
+        "--output-file",
+        type=str,
+        required=False,
+        default="output.yaml",
+        help="Path to store results yaml file. Default is output.yaml.",
     )
     parser.add_argument(
         "--video-directory",
@@ -49,11 +56,19 @@ def get_args():
         default=None,
         help="Optional path to directory to store episode videos. Default is None.",
     )
+    parser.add_argument(
+        "--disable",
+        action='store_true',
+        help="Disable storing of episode seeds and per-episode progress bars. Used for blind evaluations."
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = get_args()
+    if args.seed is None:
+        args.seed = input("Enter seed (int): ")
+        print("")  # add line return
 
     with open(args.agent_config) as f:
         config = yaml.load(f, yaml.Loader)
@@ -67,12 +82,12 @@ if __name__ == "__main__":
         args.episodes,
         args.env_config,
         args.seed,
-        args.video_directory
+        args.video_directory,
+        args.disable,
     )
 
     print(results["summary"])
-    filename = 'evaluation.' + datetime.now().isoformat() + '.yaml'
-    print("Writing results to " + filename)
+    print("Writing results to " + args.output_file)
 
     # Convert numpy arrays to lists for yaml serialization
     for key, value in results.items():
@@ -80,5 +95,5 @@ if __name__ == "__main__":
             results[key] = value.tolist()
 
     # save results to file
-    with open(filename, 'w') as outfile:
+    with open(args.output_file, 'w') as outfile:
         yaml.dump(results, outfile, default_flow_style=False)
