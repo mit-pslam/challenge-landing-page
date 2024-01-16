@@ -1,7 +1,6 @@
 FROM nvidia/vulkan:1.2.133-450
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG GITHUB_TOKEN
 
 # Install system dependencies
 RUN apt-get --allow-insecure-repositories --allow-unauthenticated update 
@@ -20,20 +19,10 @@ ENV PATH="/root/miniconda/envs/aia-challenge/bin:${PATH}"
 
 RUN /root/miniconda/bin/conda run -n aia-challenge conda install -y pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge
 
-# Now, install the challenge code and dependencies
-# Because we're trying to use GITHUB_TOKEN, we can't quite do a "pip install -r aia_challenge/requirements.txt"
-# So, we'll install the requirements one by one
-# Note that for some reason we have to pin setuptools and wheel to specific versions first. Otherwise, we get an error when installing gym
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install "setuptools==65.5.0" "wheel==0.38.4"
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install "numpy<1.20" "gym<=0.21.0" "importlib-metadata<5.0" "scipy>=1.4.0" "zmq" "opencv-python==4.1.2.30" "transforms3d" "yacs" "matplotlib"
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install tesse-gym@git+https://git@github.com/MIT-TESSE/tesse-gym.git@master#egg=tesse-gym
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install git+https://${GITHUB_TOKEN}@github.mit.edu/aiia-suas-disaster-response/pyFlightGoggles.git@opencv4-compatible#egg=flightgoggles
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install "ray[default,rllib]==1.13.0" "aiohttp<3.8.0" "aioredis==1.3.1"
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install --no-deps git+https://${GITHUB_TOKEN}@github.mit.edu/aiia-suas-disaster-response/rl_navigation.git@develop#egg=rl_navigation
-
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install git+https://${GITHUB_TOKEN}@github.mit.edu/aiia-suas-disaster-response/rllib-policies.git@master#egg=rllib_policies
-# For some reason, we need to re-install importlib-metadata to get a proper version
-RUN /root/miniconda/bin/conda run -n aia-challenge pip install "importlib-metadata<5.0"
+# Now, install the challenge dependencies
+RUN /root/miniconda/bin/conda run -n aia-challenge pip install \
+    git+https://git@github.com/mit-pslam/rl_navigation.git@develop#egg=rl_navigation[rllib] \
+    git+https://git@github.com/mit-pslam/rllib-policies.git@master#egg=rllib_policies
 
 # Install the local instance of the challenge code into image.
 # Note local changes are included in the image.

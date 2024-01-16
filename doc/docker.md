@@ -23,14 +23,9 @@ While not overly significant, we do not install FlightGoggles.
 Instead, we mount a host machine folder that contains FlightGoggles at runtime using the `--volume` argument.
 The primary purpose of this is to minimize the size of the resulting Docker image.
 
-Building the docker image requires that you create a [Github Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens),
-which allows you to clone private repositories without embedding tokens or keys into the Docker image.
-Click [here](https://github.mit.edu/settings/tokens) to create a token on github.mit.edu.
-
-
 From the root of this repository, run the following.
 ```sh
-docker build --build-arg GITHUB_TOKEN=<YOUR/GITHUB/TOKEN> --tag=aia-challenge -f docker/Dockerfile .
+docker build --tag=aia-challenge -f docker/Dockerfile .
 ```
 
 This will create a docker image called `aia-challenge`.

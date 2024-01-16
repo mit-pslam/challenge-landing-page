@@ -13,7 +13,7 @@ __Outline__
 1. [Creating your own policy](#Policy-Design-Overview)
 1. [Getting started with a baseline](#Baseline)
 
-1. [Submitting your policy for evaluation](#Submitting)
+1. [Submitting your policy for evaluation](#Submission)
 1. [Additional details](#additional-details)
 
 
